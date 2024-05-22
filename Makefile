@@ -6,8 +6,14 @@ all: first
 first.o: scenarios/first.cpp
 	$(CC) $(CFLAGS) -c scenarios/first.cpp
 
+second.o: scenarios/second.cpp
+	$(CC) $(CFLAGS) -c scenarios/second.cpp
+
 first: first.o host.o link_installer.o message_service_installer.o echo_service_installer.o message_service.o manual_router.o
 	$(CC) $(CFLAGS) -o first
+
+second: second.o host.o link_installer.o message_service_installer.o echo_service_installer.o message_service.o manual_router.o
+	$(CC) $(CFLAGS) -o second second.o
 
 host.o: host.cpp host.h
 	$(CC) $(CFLAGS) -c host.cpp
