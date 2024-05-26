@@ -1,9 +1,11 @@
 #include "host.h"
 
 void Host::initialize() {
-  NULL;
+  for(int i = 0; i < services_.size(); i++) {
+    delete services_[i];
+  }
 }
 
 void Host::send(Packet *packet) {
-  NULL;
+  int random = rand() % services_.size();
 }

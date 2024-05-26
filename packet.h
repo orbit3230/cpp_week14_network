@@ -11,6 +11,7 @@ public:
          std::string data)
       : srcAddress_(srcAddress), destAddress_(destAddress), srcPort_(srcPort),
         destPort_(destPort) {
+    // string을 char 벡터로 변환
     for (size_t i = 0; i < data.size(); i++) {
       data_.push_back(data[i]);
     }

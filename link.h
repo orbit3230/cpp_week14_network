@@ -20,6 +20,10 @@ private:
   Node *other(const Node *node) const {
     return node == nodeA_ ? nodeB_ : nodeA_;
   }
+
+public:
+  // 패킷을 전달
+  void transmit(Packet *packet);
 };
 
 #endif
