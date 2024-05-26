@@ -10,7 +10,19 @@
 
 ### Host
 
-우리가 일반적으로 사용하는 컴퓨터와 같이 네트워킹이 가능한 기기를 나타낸 클래스다. 하나의 주소를 가지며 여러 링크를 가지지만, 패킷 전송 시 하나의 링크를 랜덤으로 골라 전송한다.
+우리가 일반적으로 사용하는 컴퓨터와 같이 네트워킹이 가능한 기기를 나타낸 클래스다. 하나의 주소를 가지며 여러 링크를 가지지만, 패킷 전송 시 하나의 링크를 랜덤으로 골라 전송한다. 패킷을 전송하거나 받을때 다음과 같이 출력한다.
+
+```
+Host #1: sending packet (from: 0, to: 1, 13 bytes)
+Host #0: received packet, destination port: 3000
+```
+
+포트에 맞는 서비스가 없다면 다음과 같이 출력한다.
+
+```
+Host #0: received packet, destination port: 0
+Host #0: no service for packet (from: 456, to: 123, 7 bytes)
+```
 
 ### Service
 
@@ -22,6 +34,12 @@ Host에 설치된 프로그램을 나타낸 클래스다. 하나의 포트를 �
 
 ```
 Router #2: forwarding packet (from: 1, to: 0, 13 bytes)
+```
+
+라우팅 테이블에 존재하지 않는 주소를 목적 주소로 하는 패킷이 온 경우, 다음 같이 출력한다.
+
+```
+Router #6: no route for packet (from: 456, to: 0, 7 bytes)
 ```
 
 ### ManualRouter
@@ -49,7 +67,7 @@ Link와 각 Service를 설치하는 것에 도움을 주는 Helper 클래스다.
 받은 패킷을 전송자에게 그대로 다시 전달하는 Service를 나타내는 클래스다. 받은 패킷을 다음과 같이 출력한다.
 
 ```
-EchoService: received "Hello, world!"
+EchoService: received "Hello, world!" from 0:1000, send reply with same data
 ```
 
 ### MessageService
@@ -57,7 +75,7 @@ EchoService: received "Hello, world!"
 send 함수를 호출하여 문자열 데이터를 네트워크로 전송할 수 있는 Service를 나타낸 클래스다. 받은 패킷을 다음과 같이 출력한다.
 
 ```
-MessageService: received "Hello, world!"
+MessageService: received "Hello, world!" from 1:3000
 ```
 
 ## 과제 조건
@@ -164,7 +182,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
 Host #1: received packet, destination port: 1001
-Host #1: received packet, destination port: 1001
 MessageService: received "Hello 0" from 124:3000
 Host #3: sending packet (from: 457, to: 124, 7 bytes)
 Link: forwarding packet from node #3, to node #6
@@ -176,7 +193,6 @@ Host #2: sending packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
-Host #3: received packet, destination port: 1001
 Host #3: received packet, destination port: 1001
 MessageService: received "Hello 0" from 124:3000
 Host #5: sending packet (from: 458, to: 124, 7 bytes)
@@ -190,7 +206,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
 Host #5: received packet, destination port: 1001
-Host #5: received packet, destination port: 1001
 MessageService: received "Hello 0" from 124:3000
 Host #1: sending packet (from: 456, to: 125, 7 bytes)
 Link: forwarding packet from node #1, to node #6
@@ -202,8 +217,6 @@ Host #4: sending packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
-Host #1: received packet, destination port: 1002
-Host #1: received packet, destination port: 1002
 Host #1: received packet, destination port: 1002
 MessageService: received "Hello 0" from 125:3000
 Host #3: sending packet (from: 457, to: 125, 7 bytes)
@@ -217,8 +230,6 @@ Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
 Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
 MessageService: received "Hello 0" from 125:3000
 Host #5: sending packet (from: 458, to: 125, 7 bytes)
 Link: forwarding packet from node #5, to node #6
@@ -230,8 +241,6 @@ Host #4: sending packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
-Host #5: received packet, destination port: 1002
-Host #5: received packet, destination port: 1002
 Host #5: received packet, destination port: 1002
 MessageService: received "Hello 0" from 125:3000
 Host #1: sending packet (from: 456, to: 0, 7 bytes)
@@ -247,19 +256,16 @@ Host #1: sending packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #1, to node #6
 Router #6: forwarding packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 456, to: 123, 7 bytes)
 Host #3: sending packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #3, to node #6
 Router #6: forwarding packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 457, to: 123, 7 bytes)
 Host #5: sending packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #5, to node #6
 Router #6: forwarding packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 458, to: 123, 7 bytes)
 Host #1: sending packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #1, to node #6
@@ -308,7 +314,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
 Host #1: received packet, destination port: 1001
-Host #1: received packet, destination port: 1001
 MessageService: received "Hello 1" from 124:3000
 Host #3: sending packet (from: 457, to: 124, 7 bytes)
 Link: forwarding packet from node #3, to node #6
@@ -320,7 +325,6 @@ Host #2: sending packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
-Host #3: received packet, destination port: 1001
 Host #3: received packet, destination port: 1001
 MessageService: received "Hello 1" from 124:3000
 Host #5: sending packet (from: 458, to: 124, 7 bytes)
@@ -334,7 +338,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
 Host #5: received packet, destination port: 1001
-Host #5: received packet, destination port: 1001
 MessageService: received "Hello 1" from 124:3000
 Host #1: sending packet (from: 456, to: 125, 7 bytes)
 Link: forwarding packet from node #1, to node #6
@@ -346,8 +349,6 @@ Host #4: sending packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
-Host #1: received packet, destination port: 1002
-Host #1: received packet, destination port: 1002
 Host #1: received packet, destination port: 1002
 MessageService: received "Hello 1" from 125:3000
 Host #3: sending packet (from: 457, to: 125, 7 bytes)
@@ -361,8 +362,6 @@ Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
 Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
 MessageService: received "Hello 1" from 125:3000
 Host #5: sending packet (from: 458, to: 125, 7 bytes)
 Link: forwarding packet from node #5, to node #6
@@ -374,8 +373,6 @@ Host #4: sending packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
-Host #5: received packet, destination port: 1002
-Host #5: received packet, destination port: 1002
 Host #5: received packet, destination port: 1002
 MessageService: received "Hello 1" from 125:3000
 Host #1: sending packet (from: 456, to: 0, 7 bytes)
@@ -391,19 +388,16 @@ Host #1: sending packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #1, to node #6
 Router #6: forwarding packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 456, to: 123, 7 bytes)
 Host #3: sending packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #3, to node #6
 Router #6: forwarding packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 457, to: 123, 7 bytes)
 Host #5: sending packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #5, to node #6
 Router #6: forwarding packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 458, to: 123, 7 bytes)
 Host #1: sending packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #1, to node #6
@@ -452,7 +446,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
 Host #1: received packet, destination port: 1001
-Host #1: received packet, destination port: 1001
 MessageService: received "Hello 2" from 124:3000
 Host #3: sending packet (from: 457, to: 124, 7 bytes)
 Link: forwarding packet from node #3, to node #6
@@ -464,7 +457,6 @@ Host #2: sending packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
-Host #3: received packet, destination port: 1001
 Host #3: received packet, destination port: 1001
 MessageService: received "Hello 2" from 124:3000
 Host #5: sending packet (from: 458, to: 124, 7 bytes)
@@ -478,7 +470,6 @@ Link: forwarding packet from node #2, to node #6
 Router #6: forwarding packet (from: 124, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
 Host #5: received packet, destination port: 1001
-Host #5: received packet, destination port: 1001
 MessageService: received "Hello 2" from 124:3000
 Host #1: sending packet (from: 456, to: 125, 7 bytes)
 Link: forwarding packet from node #1, to node #6
@@ -490,8 +481,6 @@ Host #4: sending packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 456, 7 bytes)
 Link: forwarding packet from node #6, to node #1
-Host #1: received packet, destination port: 1002
-Host #1: received packet, destination port: 1002
 Host #1: received packet, destination port: 1002
 MessageService: received "Hello 2" from 125:3000
 Host #3: sending packet (from: 457, to: 125, 7 bytes)
@@ -505,8 +494,6 @@ Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 457, 7 bytes)
 Link: forwarding packet from node #6, to node #3
 Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
-Host #3: received packet, destination port: 1002
 MessageService: received "Hello 2" from 125:3000
 Host #5: sending packet (from: 458, to: 125, 7 bytes)
 Link: forwarding packet from node #5, to node #6
@@ -518,8 +505,6 @@ Host #4: sending packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #4, to node #6
 Router #6: forwarding packet (from: 125, to: 458, 7 bytes)
 Link: forwarding packet from node #6, to node #5
-Host #5: received packet, destination port: 1002
-Host #5: received packet, destination port: 1002
 Host #5: received packet, destination port: 1002
 MessageService: received "Hello 2" from 125:3000
 Host #1: sending packet (from: 456, to: 0, 7 bytes)
@@ -535,18 +520,15 @@ Host #1: sending packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #1, to node #6
 Router #6: forwarding packet (from: 456, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 456, to: 123, 7 bytes)
 Host #3: sending packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #3, to node #6
 Router #6: forwarding packet (from: 457, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 457, to: 123, 7 bytes)
 Host #5: sending packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #5, to node #6
 Router #6: forwarding packet (from: 458, to: 123, 7 bytes)
 Link: forwarding packet from node #6, to node #0
-Host #0: received packet, destination port: 0
 Host #0: no service for packet (from: 458, to: 123, 7 bytes)
 ```
