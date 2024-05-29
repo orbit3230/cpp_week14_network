@@ -22,6 +22,7 @@ private:
   }
 
 public:
+  
   // 패킷을 전달
   void transmit(Packet *packet);
 };

@@ -12,6 +12,12 @@ class EchoService : public Service {
 
 private:
   EchoService(Host *host, short port) : Service(host, port) {}
+
+public:
+  // 패킷을 전송한다
+  void send(Packet *packet) override;
+  // 패킷을 수신한다
+  void receive(Packet *packet) override;
 };
 
 #endif

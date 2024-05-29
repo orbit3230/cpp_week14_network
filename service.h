@@ -17,6 +17,13 @@ protected:
 
   // #### why port is not short? why it is int? ####
   Service(Host *host, int port) : host_(host), port_(port) {}
+
+public:
+  virtual ~Service() {}
+  // 패킷을 전송
+  virtual void send(Packet *packet) = 0;
+  // 패킷을 수신
+  virtual void receive(Packet *packet) = 0;
 };
 
 #endif
