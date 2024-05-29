@@ -14,6 +14,7 @@ private:
 
 protected:
   Packet *packet_;
+  // 노드에 연결된 링크 목록
   std::vector<Link *> links_;
 
 public:

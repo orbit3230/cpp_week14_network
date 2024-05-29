@@ -16,8 +16,6 @@ int main() {
   // 호스트를 생성한다
   Host *echoServer = new Host(1);
   Host *messageClient = new Host(0);
-  // debug
-  std::cout << "Host created\n";
 
   // 서비스를 설치한다
   EchoServiceInstaller echoServiceInstaller(ECHO_PORT);
@@ -26,16 +24,12 @@ int main() {
                                                   ECHO_PORT);
   MessageService *messageService =
       messageServiceInstaller.install(messageClient);
-  // debug
-  std::cout << "Service installed\n";
 
   // 라우터를 생성한다.
   std::vector<ManualRouter *> routers;
   for (int i = 0; i < 4; i++) {
     routers.push_back(new ManualRouter());
   }
-  // debug
-  std::cout << "Router created\n";
 
   // 라우터와 호스트 간에 링크로 연결한다.
   LinkInstaller linkInstaller;
@@ -46,8 +40,6 @@ int main() {
   links.push_back(linkInstaller.install(routers[1], routers[3]));    // 3
   links.push_back(linkInstaller.install(routers[2], routers[3]));    // 4
   links.push_back(linkInstaller.install(routers[3], messageClient)); // 5
-  // debug
-  std::cout << "Link installed\n";
 
   // 라우팅 테이블을 설정한다.
   routers[0]->addRoutingEntry(echoServer->address(), links[0]);
@@ -63,8 +55,6 @@ int main() {
   routers[3]->addRoutingEntry(echoServer->address(), links[3]);
   routers[3]->addRoutingEntry(echoServer->address(), links[4]);
   routers[3]->addRoutingEntry(messageClient->address(), links[5]);
-  // debug
-  std::cout << "Routing table set\n";
 
   // 토폴로지는 다음 그림과 같다:
   //
@@ -85,8 +75,6 @@ int main() {
   // 각 호스트를 초기화한다.
   echoServer->initialize();
   messageClient->initialize();
-  // debug
-  std::cout << "Host initialized\n";
 
   // 메시지를 전송한다.
   messageService->send("Hello, world!");
