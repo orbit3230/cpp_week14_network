@@ -15,8 +15,7 @@ protected:
   // 서비스가 사용하는 포트
   short port_;
 
-  // #### why port is not short? why it is int? ####
-  Service(Host *host, int port) : host_(host), port_(port) {}
+  Service(Host *host, short port) : host_(host), port_(port) {}
 
 public:
   virtual ~Service() {}

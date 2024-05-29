@@ -12,6 +12,10 @@ void Router::send(Packet* packet) {
             return;
         }
     }
+    std::cout << "Router #" << id() << ": no route for packet (from: " 
+                                    << packet->srcAddress().toString() << ", to: "
+                                    << packet->destAddress().toString() << ", " 
+                                    << packet->data().size() << " bytes)" << std::endl;
 }
 
 void Router::receive(Packet* packet) {
