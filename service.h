@@ -19,6 +19,7 @@ protected:
 
 public:
   virtual ~Service() {}
+  short port() const { return port_; }
   // 패킷을 전송
   virtual void send(Packet *packet) = 0;
   // 패킷을 수신
