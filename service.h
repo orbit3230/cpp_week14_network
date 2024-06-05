@@ -21,7 +21,7 @@ public:
   virtual ~Service() {}
   short port() const { return port_; }
   // 패킷을 전송
-  virtual void send(Packet *packet) = 0;
+  virtual void send() = 0;
   // 패킷을 수신
   virtual void receive(Packet *packet) = 0;
 };

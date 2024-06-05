@@ -11,14 +11,15 @@ Host::~Host() {
 void Host::initialize() {
 }
 
-void Host::send(Packet *packet) {
+void Host::send() {
   std::cout << "Host #" << id() << ": sending packet (from: " 
-            << packet->srcAddress().toString() << ", to: "
-            << packet->destAddress().toString() << ", " 
-            << packet->data().size() << " bytes)" << std::endl;
+            << packet_->srcAddress().toString() << ", to: "
+            << packet_->destAddress().toString() << ", " 
+            << packet_->data().size() << " bytes)" << std::endl;
             
   int random = rand() % links_.size();
-  links_[random]->transmit(packet, this->id());
+  links_[random]->transmit(packet_, this->id());
+  unsetPacket();
 }
 
 void Host::receive(Packet *packet) {
@@ -27,6 +28,7 @@ void Host::receive(Packet *packet) {
     if(service->port() == packet->destPort()) {
       std::cout << "Host #" << id() << ": received packet, "
                 << "destination port: " << packet->destPort() << std::endl;
+      setPacket(packet);
       service->receive(packet);
       return;
     }

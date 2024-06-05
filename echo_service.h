@@ -15,7 +15,7 @@ private:
 
 public:
   // 패킷을 전송한다
-  void send(Packet *packet) override;
+  void send() override;
   // 패킷을 수신한다
   void receive(Packet *packet) override;
 };

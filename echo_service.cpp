@@ -1,12 +1,8 @@
 #include "echo_service.h"
 
-void EchoService::send(Packet *packet) {
+void EchoService::send() {
   // 전송자에게 다시 전송
-  // host_->send(packet) 은 링크를 랜덤으로 하나 선택하기 때문에
-  // 패킷의 방향을 바꾸어 다시 전송해야한다.  
-  Packet *reply = new Packet(packet->destAddress(), packet->srcAddress(), packet->destPort(), packet->srcPort(), packet->data());
-  delete packet;  // 원본은 삭제
-  host_->send(reply);  // 복사본 전송
+  host_->send();            // 복사본 전송
 }
 
 void EchoService::receive(Packet *packet) {
@@ -16,5 +12,10 @@ void EchoService::receive(Packet *packet) {
 
   std::cout << "send reply with same data" << std::endl;
   // 받은 패킷을 그대로 전송
-  send(packet);
+  // 방향을 바꾼 패킷을 생성하여 세팅한다.
+  Packet *reply = new Packet(packet->destAddress(), packet->srcAddress(), packet->destPort(), packet->srcPort(), packet->data());
+  delete packet;            // 원본은 삭제
+  host_->unsetPacket();
+  host_->setPacket(reply);  // 복사본을 저장
+  send();                   // 복사본 전송
 }

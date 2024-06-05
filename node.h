@@ -22,10 +22,15 @@ public:
   virtual ~Node() {}
   int id() const { return id_; }
 
+  // 노드에 패킷을 설정
+  void setPacket(Packet *packet) { packet_ = packet; }
+  // 노드에 패킷을 해제
+  void unsetPacket() { packet_ = nullptr; }
+
+  // 노드가 패킷을 전송 - virtual
+  virtual void send() = 0;
   // 노드가 패킷을 수신 - virtual
   virtual void receive(Packet *packet) = 0;
-  // 노드가 패킷을 전송 - virtual
-  virtual void send(Packet *packet) = 0;
 };
 
 #endif

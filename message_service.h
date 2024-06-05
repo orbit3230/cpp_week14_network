@@ -22,7 +22,7 @@ public:
   // 메시지를 전송한다 (패킷으로 변환하여 전송)
   void send(std::string message);
   // 패킷을 전송한다
-  void send(Packet *packet) override;
+  void send() override;
   // 패킷을 수신한다
   void receive(Packet *packet) override;
 };
