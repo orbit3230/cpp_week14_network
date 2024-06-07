@@ -1,7 +1,20 @@
 CC = g++
 CFLAGS = -g -Wall -Werror -std=c++11
+OBJECTS = node.o host.o link.o link_installer.o service_installer.o message_service_installer.o echo_service.o echo_service_installer.o message_service.o router.o manual_router.o
 
-all: first second
+all: first second third forth
+
+first: first.o $(OBJECTS)
+	$(CC) $(CFLAGS) -o first first.o $(OBJECTS)
+
+second: second.o $(OBJECTS)
+	$(CC) $(CFLAGS) -o second second.o $(OBJECTS)
+
+third: third.o $(OBJECTS)
+	$(CC) $(CFLAGS) -o third third.o $(OBJECTS)
+
+forth: forth.o $(OBJECTS)
+	$(CC) $(CFLAGS) -o forth forth.o $(OBJECTS)
 
 first.o: scenarios/first.cpp
 	$(CC) $(CFLAGS) -c scenarios/first.cpp
@@ -9,11 +22,11 @@ first.o: scenarios/first.cpp
 second.o: scenarios/second.cpp
 	$(CC) $(CFLAGS) -c scenarios/second.cpp
 
-first: first.o node.o host.o link.o link_installer.o service_installer.o message_service_installer.o echo_service.o echo_service_installer.o message_service.o router.o manual_router.o
-	$(CC) $(CFLAGS) -o first first.o node.o host.o link.o link_installer.o service_installer.o message_service_installer.o echo_service.o echo_service_installer.o message_service.o router.o manual_router.o
+third.o: scenarios/third.cpp
+	$(CC) $(CFLAGS) -c scenarios/third.cpp
 
-second: second.o node.o host.o link.o link_installer.o service_installer.o message_service_installer.o echo_service.o echo_service_installer.o message_service.o router.o manual_router.o
-	$(CC) $(CFLAGS) -o second second.o node.o host.o link.o link_installer.o service_installer.o message_service_installer.o echo_service.o echo_service_installer.o message_service.o router.o manual_router.o
+forth.o: scenarios/forth.cpp
+	$(CC) $(CFLAGS) -c scenarios/forth.cpp
 
 node.o: node.cpp node.h
 	$(CC) $(CFLAGS) -c node.cpp
@@ -49,4 +62,4 @@ manual_router.o: manual_router.cpp manual_router.h
 	$(CC) $(CFLAGS) -c manual_router.cpp
 
 clean:
-	rm -f *.o first second
+	rm -f *.o first second third forth

@@ -14,14 +14,20 @@ private:
 
   Node *nodeA_;
   Node *nodeB_;
+  double delay_;
 
+public:
+  double delay() { return delay_; }
+
+  Node *nodeA() { return nodeA_; }
+
+  Node *nodeB() { return nodeB_; }
 
   // 매개변수로 주어진 노드가 아닌 반대편 노드를 구한다.
   Node *other(const Node *node) const {
     return node == nodeA_ ? nodeB_ : nodeA_;
   }
 
-public:
   // 패킷을 전달
   void transmit(Packet *packet, int fromId);
 };

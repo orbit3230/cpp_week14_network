@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include "link.h"
+#include "object.h"
 #include "packet.h"
 #include <vector>
 
