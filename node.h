@@ -6,12 +6,14 @@
 #include "packet.h"
 #include <vector>
 
-class Node {
+class Node : public Object {
   friend class LinkInstaller;
 
 private:
   int id_;
   static int nextId_;
+
+  virtual std::string name() override { return "Node"; }
 
 protected:
   Packet *packet_;

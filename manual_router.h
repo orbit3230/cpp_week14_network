@@ -6,6 +6,9 @@
 
 class ManualRouter : public Router {
 
+private:
+  virtual std::string name() override { return "ManualRouter"; }
+
 public:
   // 목적지 주소에 따른 다음 링크를 설정한다.
   void addRoutingEntry(const Address &destination, Link *nextLink);

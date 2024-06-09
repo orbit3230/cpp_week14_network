@@ -5,8 +5,11 @@
 
 class Host;
 
-class Service {
+class Service : public Object {
   friend class ServiceInstaller;
+
+private :
+  virtual std::string name() override { return "Service"; }
 
 protected:
   // 서비스가 설치된 호스트

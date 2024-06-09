@@ -13,9 +13,8 @@ void MessageService::send() {
 }
 
 void MessageService::receive(Packet *packet) {
-  std::cout << "MessageService: received \""
-            << packet->dataString() << "\" "
-            << "from " << packet->srcAddress().toString() << ":" << packet->srcPort() << std::endl;
+  log("received \"" + packet->dataString() + "\" from " 
+                    + packet->srcAddress().toString() + ":" + std::to_string(packet->srcPort()));
 
   // MessageService가 패킷을 받으면 시뮬레이션 사이클 종료
   delete packet;

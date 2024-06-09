@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-class Packet {
+class Packet : public Object {
 public:
   Packet(Address srcAddress, Address destAddress, short srcPort, short destPort,
          std::string data)
@@ -52,6 +52,8 @@ private:
   short srcPort_;
   short destPort_;
   std::vector<char> data_;
+
+  virtual std::string name() override { return "Packet"; }
 };
 
 #endif

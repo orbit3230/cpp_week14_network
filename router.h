@@ -13,6 +13,9 @@ public:
 };
 
 class Router : public Node {
+private :
+  virtual std::string name() override { return "Router"; }
+
 protected:
   std::vector<RoutingEntry> routingTable_;
 

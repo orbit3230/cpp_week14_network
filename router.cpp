@@ -4,11 +4,8 @@
 void Router::send() {
   for (RoutingEntry entry : routingTable_) {
     if (entry.destination == packet_->destAddress()) {
-      std::cout << "Router #" << id() << ": forwarding packet (from: " 
-                                      << packet_->srcAddress().toString() << ", to: "
-                                      << packet_->destAddress().toString() << ", " 
-                                      << packet_->data().size() << " bytes)" << std::endl;
-      entry.nextLink->transmit(packet_, this->id());
+      log("forwarding packet: " + packet_->toString() + " to " + entry.nextLink->other(this)->toString());
+      Simulator::schedule(Simulator::now(), [this, entry]() -> void { entry.nextLink->transmit(packet_, this->id()); });
       return;
     }
   }

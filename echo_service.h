@@ -13,6 +13,8 @@ class EchoService : public Service {
 private:
   EchoService(Host *host, short port) : Service(host, port) {}
 
+  std::string name() override { return "EchoService"; }
+
 public:
   // 패킷을 전송한다
   void send() override;
