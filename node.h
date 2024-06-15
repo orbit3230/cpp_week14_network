@@ -24,6 +24,10 @@ public:
   Node() : id_(nextId_++) {}
   virtual ~Node() {}
   int id() const { return id_; }
+  std::vector<Link *> links() const { return links_; }
+
+  // 특정 노드와 연결된 링크가 있는지 구하는 메소드
+  Link *linkTo(Node *node);
 
   // 노드에 패킷을 설정
   void setPacket(Packet *packet) { packet_ = packet; }

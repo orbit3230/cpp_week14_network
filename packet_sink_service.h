@@ -5,8 +5,12 @@
 #include <string>
 
 class PacketSinkService : public Service {
+  friend class PacketSinkServiceInstaller;
 private:
   PacketSinkService(Host *host, short port);
+
+  void send() override;
+  void receive(Packet *packet) override;
 };
 
 #endif

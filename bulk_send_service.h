@@ -11,9 +11,18 @@ class BulkSendService : Service {
   friend class BulkSendServiceInstaller;
 
 private:
+  Address destAddress_;
+  short destPort_;
+  double delay_;
+  double startTime_;
+  double stopTime_;
+
   BulkSendService(Host *host, Address destAddress, short destPort,
                   double delay = 1, double startTime = 0,
                   double stopTime = 10.0);
+  
+  void send() override;
+  void receive(Packet *packet) override;
 };
 
 #endif

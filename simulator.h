@@ -7,7 +7,6 @@
 #include <functional>
 #include <queue>
 #include <vector>
-#include <iostream>
 
 class Simulator;
 
@@ -58,6 +57,7 @@ public:
       Schedule schedule = schedules_.top();
       schedules_.pop();
 
+      time_ = schedule.time();
       schedule.call();
     }
   }

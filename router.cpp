@@ -1,19 +1,15 @@
 #include "router.h"
-#include <iostream>
+#include "simulator.h"
 
 void Router::send() {
   for (RoutingEntry entry : routingTable_) {
     if (entry.destination == packet_->destAddress()) {
-      log("forwarding packet: " + packet_->toString() + " to " + entry.nextLink->other(this)->toString());
+      log("forwarding packet: " + packet_->toString() + " to " + entry.nextLink->toString());
       Simulator::schedule(Simulator::now(), [this, entry]() -> void { entry.nextLink->transmit(packet_, this->id()); });
       return;
     }
   }
-  std::cout << "Router #" << id() << ": no route for packet (from: " 
-                                  << packet_->srcAddress().toString() << ", to: "
-                                  << packet_->destAddress().toString() << ", " 
-                                  << packet_->data().size() << " bytes)" << std::endl;
-  unsetPacket();
+  log("no route for packet: " + packet_->toString());
 }
 
 void Router::receive(Packet* packet) {

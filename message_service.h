@@ -4,7 +4,6 @@
 #include "address.h"
 #include "host.h"
 #include "service.h"
-#include <iostream>
 
 // send 함수를 호출하여 메시지를 전송할 수 있는 서비스
 class MessageService : public Service {

@@ -1,4 +1,5 @@
 #include "echo_service.h"
+#include "simulator.h"
 
 void EchoService::send() {
   // 전송자에게 다시 전송
