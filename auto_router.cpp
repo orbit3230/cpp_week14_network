@@ -65,7 +65,6 @@ void AutoRouter::calculate(const std::vector<Node *> &nodes, const std::vector<L
   }
   // 라우팅 테이블을 복사
   // routingTable_ 은 Router 클래스 member variable 이다. 혼동 X
-  // 각 목적지에 대한 첫 번째 링크를 전달할 것이다.  
   routingTable_.clear();
   for (const auto &entry : routingTables) {
     for (const auto &route : entry.second) {
