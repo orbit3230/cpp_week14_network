@@ -7,6 +7,6 @@ void PacketSinkService::send() {
 }
 
 void PacketSinkService::receive(Packet *packet) {
-  int packetSize = packet->data().size();
-  log("received total " + std::to_string(packetSize) + " bytes");
+  receivedBytes_ += packet->data().size();
+  log("received total " + std::to_string(receivedBytes_) + " bytes");
 }

@@ -9,6 +9,10 @@ class PacketSinkService : public Service {
 private:
   PacketSinkService(Host *host, short port);
 
+  std::string name() override { return "PacketSinkService"; }
+
+  int receivedBytes_ = 0;
+
   void send() override;
   void receive(Packet *packet) override;
 };

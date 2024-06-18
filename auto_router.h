@@ -14,6 +14,9 @@
 
 class AutoRouter : public Router {
 public:
+
+  std::string name() override { return "AutoRouter"; }
+
   // 전체 노드와 링크 정보를 통해
   // 모든 호스트로 전달될 수 있는 라우팅 테이블을 구성한다
   void calculate(const std::vector<Node *> &nodes,

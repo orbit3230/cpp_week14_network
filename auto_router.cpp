@@ -2,74 +2,68 @@
 #include <iostream>
 
 void AutoRouter::calculate(const std::vector<Node *> &nodes, const std::vector<Link *> &links) {
-  // 모든 노드에 대한 최단 경로를 저장하는 테이블
-  std::map<int, std::vector<RoutingEntry>> routingTables;
-  
-  // 모든 노드에 대한 최단 경로를 계산
-  for (Node *node : nodes) {
-    // 최단 경로를 계산하기 위한 변수들(인덱스는 각 노드들의 id를 사용)
-    std::map<Address, double> distance;
-    std::map<Address, Node *> previous;
-    std::set<Address> visited;
-    
-    // 초기화
-    for (Node *node : nodes) {
-      // 우선은 모든 거리를 무한대로 설정
-      distance[node->id()] = std::numeric_limits<double>::infinity();
-      previous[node->id()] = nullptr;
-    }
-    // 자기 자신에 대한 거리는 0 (adjacency matrix에서 diagonal entry를 의미)
-    distance[node->id()] = 0;
-  
-    // 다익스트라 알고리즘
-    // (bfs와 유사한 면이 있어보인다 ... 하지만 weight를 다루기에 일반 큐가 아닌 우선순위 큐를 사용)
-    std::priority_queue<std::pair<double, Node *>> pq;
-    pq.push({0, node});
-    while (!pq.empty()) {
-      Node *current = pq.top().second;
-      pq.pop();
-    
-      // 이미 방문한 노드는 pass
-      // find() 함수는 찾지 못하였을 경우 마지막을 가리키는 iterator(end())를 반환한다.  
-      if (visited.find(current->id()) != visited.end()) {
-        continue;
-      }
-      visited.insert(current->id());
-    
-      for (Link *link : current->links()) {
-        Node *neighbor = link->other(current);
-        double newDistance = distance[current->id()] + link->delay();
-        // 새로 탐색한 거리가 기존의 거리보다 짧은 경우에만 업데이트 !
-        if (newDistance < distance[neighbor->id()]) {
-          distance[neighbor->id()] = newDistance;
-          previous[neighbor->id()] = current;
-          pq.push({newDistance, neighbor});
-        }
-      }
-    }
-  
-    // 최단 경로를 라우팅 테이블에 저장
-    for (Node *destination : nodes) {
-      std::vector<RoutingEntry> routingTable;
-      Node *current = destination;
-      while (current != nullptr) {
-        Link *link = current->linkTo(previous[current->id()]);
-        if (link != nullptr) {
-        routingTable.push_back({destination->id(), link});
-        }
-        current = previous[current->id()];
-      }
-      std::reverse(routingTable.begin(), routingTable.end());
-      routingTables[destination->id()] = routingTable;
-    }
+  // 각 Host들로 향하는 경로 중에서, 최단 경로를 찾아
+  // 해당 Host의 Address와 함께, 첫 번째 Link를 RoutingEntry로 구성하여 routingTable_에 추가할 것이다.  
+  // 최단 경로를 찾기 위해서는 다익스트라 알고리즘을 사용할 것이다.
+  int n = nodes.size();
+  bool *visited = new bool[n];   // nodes의 인덱스와 대응
+  double *dist = new double[n];  // nodes의 인덱스와 대응 
+  Node **prev = new Node*[n];
+
+  for (int i = 0; i < n; i++) {
+    visited[i] = false;
+    dist[i] = std::numeric_limits<double>::max();
+    prev[i] = nullptr;
   }
-  // 라우팅 테이블을 복사
-  // routingTable_ 은 Router 클래스 member variable 이다. 혼동 X
-  routingTable_.clear();
-  for (const auto &entry : routingTables) {
-    for (const auto &route : entry.second) {
-      routingTable_.push_back(route);
+
+  // delay를 먼저 비교하여 작은 것을 우선으로, 만약 같다면 node id를 기준으로 작은 것을 우선으로.
+  std::priority_queue<std::pair<double, int>, std::vector<std::pair<double, int>>, std::greater<std::pair<double, int>>> pq;
+  int startId = this->id();
+  dist[startId] = 0;
+  pq.push({0, startId});
+
+  while (!pq.empty()) {
+    int id = pq.top().second;
+    pq.pop();
+    // 이미 방문한 노드라면 pass
+    if (visited[id]) continue;
+    visited[id] = true;
+
+    for (Link *link : nodes[id]->links()) {
+      int link_id = link->other(nodes[id])->id();
+      double delay = link->delay();
+
+      if (dist[id] + delay < dist[link_id]) {
+        dist[link_id] = dist[id] + delay;
+        prev[link_id] = nodes[id];
+        pq.push({dist[link_id], link_id});
+      }
     }
   }
 
+  // Host들의 id가 무엇인지 확인할 것이다.
+  bool isHost[n];
+  for(int i = 0; i < n; i++) {
+    Host *host = dynamic_cast<Host *>(nodes[i]);
+    if(host != nullptr)
+      isHost[i] = true;
+    else
+      isHost[i] = false;
+  }
+
+  for (int i = 0; i < n; i++) {
+    // Host에 대한 경로의 첫 링크를 찾아서 추가
+    if (isHost[i]) {
+      std::vector<Node *> path;
+      // prev를 이용하여 역추적
+      for (Node *node = nodes[i]; node != nullptr; node = prev[node->id()]) {
+        path.push_back(node);
+      }
+      std::reverse(path.begin(), path.end());
+
+      // path[1]은 현재 router에서 Host로 향하는 첫 번째 Link이다. (path[0]은 router 자신)
+      Host *host = dynamic_cast<Host *>(nodes[i]);  // Host로 타입 캐스팅
+      routingTable_.push_back(RoutingEntry(host->address(), path[1]->linkTo(path[0])));
+    }
+  }
 }
