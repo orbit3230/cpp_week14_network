@@ -41,9 +41,9 @@ void AutoRouter::calculate(const std::vector<Node *> &nodes, const std::vector<L
         double newDistance = distance[current->id()] + link->delay();
         // 새로 탐색한 거리가 기존의 거리보다 짧은 경우에만 업데이트 !
         if (newDistance < distance[neighbor->id()]) {
-        distance[neighbor->id()] = newDistance;
-        previous[neighbor->id()] = current;
-        pq.push({-newDistance, neighbor});
+          distance[neighbor->id()] = newDistance;
+          previous[neighbor->id()] = current;
+          pq.push({newDistance, neighbor});
         }
       }
     }
@@ -63,11 +63,14 @@ void AutoRouter::calculate(const std::vector<Node *> &nodes, const std::vector<L
       routingTables[destination->id()] = routingTable;
     }
   }
-  
   // 라우팅 테이블을 복사
+  // routingTable_ 은 Router 클래스 member variable 이다. 혼동 X
+  // 각 목적지에 대한 첫 번째 링크를 전달할 것이다.  
   routingTable_.clear();
   for (const auto &entry : routingTables) {
-    routingTable_ = entry.second;
+    for (const auto &route : entry.second) {
+      routingTable_.push_back(route);
+    }
   }
 
 }

@@ -21,6 +21,6 @@ void Link::send(Packet *packet, Node *to) {
 
 void Link::receive(Packet *packet, Node *from) {
   log("packet in: " + packet->toString() + " from " + from->toString());
-  Simulator::schedule(Simulator::now(), [this, packet, from]() { send(packet, other(from)); });
+  Simulator::schedule(Simulator::now() + delay_, [this, packet, from]() { send(packet, other(from)); });
   from->unsetPacket();
 }

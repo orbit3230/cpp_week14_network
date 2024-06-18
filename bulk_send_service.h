@@ -20,6 +20,8 @@ private:
   BulkSendService(Host *host, Address destAddress, short destPort,
                   double delay = 1, double startTime = 0,
                   double stopTime = 10.0);
+
+  std::string name() override { return "BulkSendService"; }
   
   void send() override;
   void receive(Packet *packet) override;
