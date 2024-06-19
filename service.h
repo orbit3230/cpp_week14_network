@@ -22,10 +22,9 @@ protected:
 
 public:
   virtual ~Service() {}
+  virtual void initialize() = 0;
   short port() const { return port_; }
-  // 패킷을 전송
   virtual void send() = 0;
-  // 패킷을 수신
   virtual void receive(Packet *packet) = 0;
 };
 

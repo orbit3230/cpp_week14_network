@@ -15,6 +15,8 @@ private:
   std::string name() override { return "EchoService"; }
 
 public:
+  // 서비스를 초기화한다
+  void initialize() override;
   // 패킷을 전송한다
   void send() override;
   // 패킷을 수신한다

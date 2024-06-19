@@ -1,6 +1,10 @@
 #include "echo_service.h"
 #include "simulator.h"
 
+void EchoService::initialize() {
+  // nothing
+}
+
 void EchoService::send() {
   // 전송자에게 다시 전송
   Simulator::schedule(Simulator::now(), [this]() -> void {host_->send();});            // 복사본 전송

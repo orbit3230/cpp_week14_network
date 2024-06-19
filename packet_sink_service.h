@@ -9,6 +9,9 @@ class PacketSinkService : public Service {
 private:
   PacketSinkService(Host *host, short port);
 
+  // 서비스를 초기화한다
+  void initialize() override;
+
   std::string name() override { return "PacketSinkService"; }
 
   int receivedBytes_ = 0;

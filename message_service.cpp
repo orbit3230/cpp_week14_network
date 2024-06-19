@@ -1,6 +1,10 @@
 #include "message_service.h"
 #include "message_service_installer.h"
 
+void MessageService::initialize() {
+  // nothing
+}
+
 void MessageService::send(std::string message) {
   Packet *packet = new Packet(host_->address(), destAddress_, port_, destPort_, message);
   host_->setPacket(packet);

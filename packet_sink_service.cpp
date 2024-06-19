@@ -2,6 +2,10 @@
 
 PacketSinkService::PacketSinkService(Host *host, short port) : Service(host, port) {}
 
+void PacketSinkService::initialize() {
+  // nothing
+}
+
 void PacketSinkService::send() {
   // nothing
 }

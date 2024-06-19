@@ -20,6 +20,8 @@ private:
   std::string name() override { return "MessageService"; }
 
 public:
+  // 서비스를 초기화한다
+  void initialize() override;
   // 메시지를 전송한다 (패킷으로 변환하여 전송)
   void send(std::string message);
   // 패킷을 전송한다

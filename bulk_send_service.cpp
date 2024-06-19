@@ -4,6 +4,10 @@ BulkSendService::BulkSendService(Host *host, Address destination, short destPort
     : Service(host, 0), destAddress_(destination), destPort_(destPort), delay_(delay), startTime_(startTime), stopTime_(stopTime) {
 }
 
+void BulkSendService::initialize() {
+  send();
+}
+
 void BulkSendService::send() {
   for(double currentTime = startTime_; currentTime < stopTime_; currentTime += delay_) {
     // make packet data of PACKET_SIZE

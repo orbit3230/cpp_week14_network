@@ -9,6 +9,8 @@ Host::~Host() {
 }
 
 void Host::initialize() {
+  for(auto service : services_)
+    service->initialize();
 }
 
 void Host::send() {

@@ -21,6 +21,9 @@ private:
                   double delay = 1, double startTime = 0,
                   double stopTime = 10.0);
 
+  // 서비스를 초기화한다
+  void initialize() override;
+
   std::string name() override { return "BulkSendService"; }
   
   void send() override;
