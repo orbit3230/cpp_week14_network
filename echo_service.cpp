@@ -7,7 +7,7 @@ void EchoService::initialize() {
 
 void EchoService::send() {
   // 전송자에게 다시 전송
-  Simulator::schedule(Simulator::now(), [this]() -> void {host_->send();});            // 복사본 전송
+  host_->send();            // 복사본 전송
 }
 
 void EchoService::receive(Packet *packet) {

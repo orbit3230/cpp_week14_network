@@ -10,8 +10,9 @@ protected:
   // 호스트와 서비스 사이의 관계를 설정한다.
   void install(Host *host, Service *service);
 
+public:
   // 호스트에 사용 가능한 포트번호를 찾아주는 메소드 (from 1000)
-  short availablePort(Host *host);
+  static short availablePort(Host *host);
 };
 
 #endif
