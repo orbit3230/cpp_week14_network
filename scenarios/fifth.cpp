@@ -16,7 +16,7 @@
 #define SERVER_ADDRESS "223.130.192.248"
 #define SERVER_PORT 80
 
-// Create network and return it's NAT
+// Create network and return its NAT
 Nat *createNatNetwork(Address natAddress, int clientCount) {
 
   Nat *nat = new Nat(Address(natAddress));
